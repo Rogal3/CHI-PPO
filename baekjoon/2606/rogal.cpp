@@ -19,7 +19,7 @@ void readInput() {
 void dfs(int index) {
     visited[index] = true;
     ++ans;
-    for (int i = 1; i <= N; ++i) {
+    for (int i = index + 1; i <= N; ++i) {
         if (path[index][i] == true && visited[i] == false) {
             dfs(i);
         }
