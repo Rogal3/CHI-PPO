@@ -31,16 +31,14 @@ bool primeIDX[10000];
 int ans;
 queue q;
 
-const char* IMPOSSIBLE = "Impossible\n";
-
-
-
 void calcPrime() {
     bool flag;
     for (int p = 5; p < 10000; p += 2) {
         flag = false;
         for (int i = 0; i < primeSize; ++i) {
-            if (p % prime[i] == 0) {
+            int curP = prime[i];
+            if (p < curP * curP) break;
+            if (p % curP == 0) {
                 flag = true;
                 break;
             }
@@ -61,24 +59,9 @@ void initPrimeIDX() {
 }
 
 int sidePrime(int p, int n, int t) {
-    if (n == 1) {
-        p = (p / 10) * 10;
-        return p + t;
-    }
-    if (n == 2) {
-        int higher = (p / 100) * 100;
-        int lower = p % 10;
-        return higher + t * 10 + lower;
-    }
-    if (n == 3) {
-        int higher = (p / 1000) * 1000;
-        int lower = p % 100;
-        return higher + t * 100 + lower;
-    }
-    if (n == 4) {
-        return t * 1000 + p % 1000;
-    }
-    return -1;
+    const int exp10[] = {0, 1, 10, 100, 1000};
+    int digit = exp10[n];
+    return p - (p / digit % 10) * digit + t * digit;
 }
 
 void bfs() {
@@ -94,9 +77,7 @@ void bfs() {
         for (int n = 1; n <= 3; ++n) {
             for (int t = 0; t <= 9; ++t) {
                 int side = sidePrime(e0.p, n, t);
-                //printf("try %d\n...", side);
                 if (primeIDX[side]) {
-                    //printf("%d is prime.\n", side);
                     primeIDX[side] = false;
                     q.push(e(side, e0.t + 1));
                 }
@@ -121,7 +102,7 @@ int main() {
         initPrimeIDX();
         bfs();
         if (ans == -1) {
-            puts(IMPOSSIBLE);
+            puts("Impossible\n");
         } else {
             printf("%d\n", ans);
         }
