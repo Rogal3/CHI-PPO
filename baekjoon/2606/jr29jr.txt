@@ -1,0 +1,39 @@
+#include <stdio.h>
+int computer[101];
+int ary[5000][2];
+int comNum;
+int pair;
+int count=0;
+void sol();
+void input();
+int main(void){
+	scanf("%d",&comNum);
+	scanf("%d",&pair);
+	input();
+	sol(1);
+	printf("%d\n",count);
+	return 0;
+}
+void input(){
+	for(int i=0;i<pair;i++){
+		scanf("%d %d",&ary[i][0],&ary[i][1]);
+	}
+}
+void sol(int num){
+	computer[num]=1;
+	for(int i=0;i<pair;i++){
+		if(ary[i][0] == num){
+			if(computer[ary[i][1]] == 0){
+				count++;
+				sol(ary[i][1]);
+			}
+		}
+
+		if(ary[i][1] == num){
+			if(computer[ary[i][0]] == 0){
+				count++;
+				sol(ary[i][0]);
+			}
+		}
+	}
+}
