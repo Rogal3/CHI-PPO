@@ -25,49 +25,51 @@ int main() {
 		}
 	}
 
-	tree.assign(11, vector<vector<int>>(11));//vector<int>¸¦ °¡Áö´Â 11*11°³ÀÇ ¹æ
+	tree.assign(11, vector<vector<int>>(11));//vector<int>ë¥¼ ê°€ì§€ëŠ” 11*11ê°œì˜ ë°©
 
 
 	for (int i = 0; i < m; ++i) {
 		cin >> x >> y >> z;
-		tree[y][x].push_back(z);
-		//ÀÌ°Å Á¤·ÄÇØ¼­ ¼ø¼­´ë·Î ³Ö¾î¾ßÇÔ
-		if (tree[y][x].size() != 0) {
-			for (int j = 0; j < tree[y][x].size(); ++j) {
-				if (tree[y][x][j] > z) {
-					tree[y][x].insert(tree[y][x].begin() + j, z);
+		tree[x][y].push_back(z);
+		//ì´ê±° ì •ë ¬í•´ì„œ ìˆœì„œëŒ€ë¡œ ë„£ì–´ì•¼í•¨
+		if (tree[x][y].size() != 0) {
+			for (int j = 0; j < tree[x][y].size(); ++j) {
+				if (tree[x][y][j] > z) {
+					tree[x][y].insert(tree[y][x].begin() + j, z);
 				}
 			}
 		}
 	}
 
 	for (int i = 0; i < k; ++i) {
-		//º½
-		//¿©¸§
+		//ë´„
+		//ì—¬ë¦„
 		for (int j = 1; j <= n; ++j) {
 			for (int h = 1; h <= n; ++h) {
 				if (tree[j][h].size() != 0) {
 					int size = tree[j][h].size();
-					int cnt = 0;
-					for (int u = 0; u < size; ++u) {
+					//int cnt = 0;
+					for (int u = 0; u < tree[j][h].size(); ++u) {
 						if (ground[j][h] >= tree[j][h][u]) {
 							ground[j][h] = ground[j][h] - tree[j][h][u];
 							tree[j][h][u]++;
 						}
 						else {
-							treeDelAge[j][h] += tree[j][h][u];
-							cnt++;
+							treeDelAge[j][h] += tree[j][h][u]/2;
+							tree[j][h].erase(tree[j][h].begin() + u);
+							u--;
+							//cnt++;
 						}
 					}
-					tree[j][h].erase(tree[j][h].begin() + size - cnt, tree[j][h].end());
-					ground[j][h] += treeDelAge[j][h] / 2;
+					//tree[j][h].erase(tree[j][h].begin() + size - cnt, tree[j][h].end());
+					ground[j][h] += treeDelAge[j][h];
 					treeDelAge[j][h] = 0;
 				}
 				
 			}
 		 }
 		
-		//°¡À»
+		//ê°€ì„
 		for (int j = 1; j <= n; ++j) {
 			for (int h = 1; h <= n; ++h) {
 				if (tree[j][h].size() != 0) {
@@ -78,7 +80,7 @@ int main() {
 						}
 					}
 					if (cnt != 0) {
-						if (j - 1 > 0) {//¿ŞÂÊ
+						if (j - 1 > 0) {//ì™¼ìª½
 							if (tree[j - 1][h].size() != 0) {
 								for (int q = 0; q < cnt; ++q) {
 									tree[j - 1][h].insert(tree[j-1][h].begin(), 1);
@@ -91,7 +93,7 @@ int main() {
 								}
 							}
 
-							if (h + 1 < n + 1) {//¿ŞÂÊ¾Æ·¡ ´ë°¢
+							if (h + 1 < n + 1) {//ì™¼ìª½ì•„ë˜ ëŒ€ê°
 								if (tree[j - 1][h+1].size() != 0) {
 									for (int q = 0; q < cnt; ++q) {
 										tree[j - 1][h+1].insert(tree[j-1][h+1].begin(), 1);
@@ -105,7 +107,7 @@ int main() {
 								}
 							}
 
-							if (h - 1 > 0) {//¿ŞÂÊ À§ ´ë°¢
+							if (h - 1 > 0) {//ì™¼ìª½ ìœ„ ëŒ€ê°
 								if (tree[j - 1][h-1].size() != 0) {
 									for (int q = 0; q < cnt; ++q) {
 										tree[j - 1][h-1].insert(tree[j-1][h-1].begin(), 1);
@@ -119,7 +121,7 @@ int main() {
 								}
 							}
 						}
-						if (h-1 > 0) {//À§ÂÊ
+						if (h-1 > 0) {//ìœ„ìª½
 							if (tree[j][h - 1].size() != 0) {
 								for (int q = 0; q < cnt; ++q) {
 									tree[j][h - 1].insert(tree[j][h - 1].begin(), 1);
@@ -132,7 +134,7 @@ int main() {
 								}
 							}
 						}
-						if (j + 1 < n+1) {//¿À¸¥ÂÊ
+						if (j + 1 < n+1) {//ì˜¤ë¥¸ìª½
 							if (tree[j + 1][h].size() != 0) {
 								for (int q = 0; q < cnt; ++q) {
 									tree[j+1][h].insert(tree[j + 1][h].begin(), 1);
@@ -145,7 +147,7 @@ int main() {
 								}
 							}
 
-							if (h + 1 < n + 1) {//¿À¸¥ÂÊ ¾Æ·¡´ë°¢
+							if (h + 1 < n + 1) {//ì˜¤ë¥¸ìª½ ì•„ë˜ëŒ€ê°
 								if (tree[j + 1][h+1].size() != 0) {
 									for (int q = 0; q < cnt; ++q) {
 										tree[j + 1][h+1].insert(tree[j + 1][h+1].begin(), 1);
@@ -159,7 +161,7 @@ int main() {
 								}
 							}
 
-							if (h - 1 > 0) {//¿À¸¥ÂÊ À§ ´ë°¢
+							if (h - 1 > 0) {//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°
 								if (tree[j + 1][h-1].size() != 0) {
 									for (int q = 0; q < cnt; ++q) {
 										tree[j + 1][h-1].insert(tree[j + 1][h-1].begin(), 1);
@@ -173,7 +175,7 @@ int main() {
 								}
 							}
 						}
-						if (h + 1 < n+1) {//¿À¸¥ÂÊ
+						if (h + 1 < n+1) {//ì˜¤ë¥¸ìª½
 							if (tree[j][h+1].size() != 0) {
 								for (int q = 0; q < cnt; ++q) {
 									tree[j][h+1].insert(tree[j][h+1].begin(), 1);
@@ -190,7 +192,7 @@ int main() {
 				}
 			}
 		}
-		//°Ü¿ï
+		//ê²¨ìš¸
 		for (int j = 1; j <= n; ++j) {
 			for (int h = 1; h <= n; ++h) {
 				ground[j][h] += groundPower[j][h];
