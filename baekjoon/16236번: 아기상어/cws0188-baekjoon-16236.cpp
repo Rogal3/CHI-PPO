@@ -85,10 +85,10 @@ void initBfs() {
         }
     }
 }
-
+/*
 int phase;
 void printForDebug() {
-    printf("\n#%d phase\n", ++phase);
+    printf("\n#%d PHASE\n", ++phase);
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < N; ++j) {
             if (baby.r == i && baby.c == j) putchar('S');
@@ -100,7 +100,7 @@ void printForDebug() {
     }
     printf("(%2d, %2d, %2d) -> (%2d, %2d, %2d), moves: %2d, size: %2d, Sat: %2d\n", baby.r, baby.c, baby.t, dst.r, dst.c, dst.t, dst.t - baby.t, sharkSize, sharkSatiety); // for debug
 }
-
+*/
 int main() {
     readInput();
     bfs();
