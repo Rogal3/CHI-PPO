@@ -1,9 +1,10 @@
 #include <iostream>
 #include <queue>
 using namespace std;
-void check(int x, int y, int ex, int ey);
+int check();
 
 int n[20][20] = { 0, };
+int road[20][20] = { 0, };
 int age = 2;
 int eatTime = 0;
 int sx, sy;
@@ -32,55 +33,61 @@ int main() {
 	int checkAge = 0;
 	while (1) {
 		int tempTime = 1000;
-		pair<int, int > emp;
+		//pair<int, int > emp;
 		int size = q.size();
 		int fin = 1000;
 
-		while (!q.empty()) {
+		tempTime=check();
+
+		/*while (!q.empty()) {
 			cnt = 1000;
 			int ex = q.front().first;
 			int ey = q.front().second;
-			check(sx, sy, ex, ey);
-			if (tempTime > cnt) {//cnt°¡ ±âÁ¸ °æ·Îº¸´Ù ÀÛ´Ù¸é
+			cnt = road[ex][ey]+1;
+			if (tempTime > cnt) {//cntê°€ ê¸°ì¡´ ê²½ë¡œë³´ë‹¤ ì‘ë‹¤ë©´
 				tempTime = cnt;
 				emp.first = ex;
 				emp.second = ey;
 			}
 			q.pop();
-		}
+		}*/
 
-		if (tempTime == 1000) {//¾Ï°Íµµ ¸ø¸ÔÀ½
+
+		if (tempTime == 1000) {//ì•”ê²ƒë„ ëª»ë¨¹ìŒ
 			break;
 		}
-		eatTime += tempTime;//Àâ¾Æ¹¬¾úÀ¸´Ï ÃÑ½Ã°£¿¡ Ãß°¡
-		n[emp.first][emp.second] = -1;//Àâ¾Æ¸Ô¾úÀ¸´Ï ±×ÀÚ¸®¿¡ sx,sy 
+		eatTime += tempTime;//ì¡ì•„ë¬µì—ˆìœ¼ë‹ˆ ì´ì‹œê°„ì— ì¶”ê°€
+		//n[emp.first][emp.second] = -1;//ì¡ì•„ë¨¹ì—ˆìœ¼ë‹ˆ ê·¸ìë¦¬ì— sx,sy 
 
 		checkAge++;
-		if (checkAge >= age) {//³ªÀÌ¸¸Å­ Àâ¾Æ¹¬¾úÀ¸¸é ³ªÀÌÁõ°¡
+		if (checkAge >= age) {//ë‚˜ì´ë§Œí¼ ì¡ì•„ë¬µì—ˆìœ¼ë©´ ë‚˜ì´ì¦ê°€
 			checkAge = 0;
 			age++;
 		}
-		sx = emp.first;
-		sy = emp.second;
-
-		for (int i = 0; i < x; i++) {
+		//sx = emp.first;
+		//sy = emp.second;
+		
+		
+		/*for (int i = 0; i < x; i++) {
 			for (int j = 0; j < x; j++) {
-				if (q.size() > 7)break;
+				road[i][j] = 0;
 				if (n[i][j] > 0 && n[i][j] < age) {
 					q.push(make_pair(i, j));;
 				}
 			}
-		}
+		}*/
 
 	}
 	cout << eatTime << endl;
 	getchar();
 	getchar();
 }
-void check(int sx, int sy, int ex, int ey) {
+int check() {
 	queue<pair<int, int>> temp;
+	queue<pair<int, int>> answer;
 	int ans = 0;
 	int c[20][20] = { 0, };
+	int road[20][20] = { 0, };
 	temp.push(make_pair(sx, sy));
 
 	while (!temp.empty()) {
@@ -88,38 +95,132 @@ void check(int sx, int sy, int ex, int ey) {
 		for (int i = 0; i < siz; ++i) {
 			int tx = temp.front().first;
 			int ty = temp.front().second;
+			road[tx][ty] = ans;
+			temp.pop();
 			if (n[tx][ty] > age) {
-				temp.pop();
 				continue;
 			}
-			c[tx][ty] = 1;
-			temp.pop();
+			/*if (n[tx][ty] < age&&n[tx][ty]>0) {
+				answer.push(make_pair(tx, ty));
+				for (int z = i + 1; z < siz; ++z) {
+					if (n[temp.front().first][temp.front().second] < age) {
+						answer.push(make_pair(temp.front().first,temp.front().second));
+					}
+					temp.pop();
+				}
+			/*	cout << "==========================ì´ë™ì¹¸ : " <<ans<<"ë‚˜ì´ : "<<age<<"ì´ ì‹œê°„ : "<<eatTime<<endl;
+				for (int i = 0; i < x; i++) {
+					for (int j = 0; j < x; j++) {
+						if (i == tx && j == ty) {
+							cout << "9" << " ";
+						}
+						else {
+							cout << n[i][j] << " ";
+						}
+					}
+					cout << endl;
+				}
+				cout << endl;
+				getchar();
+				
+				for (int z = i+1; z < siz; ++z) {
+					if (n[temp.front().first][temp.front().second] < age) {
+						cout << "x = " << temp.front().first << " y= " << temp.front().second << " " <<road[temp.front().first][temp.front().second]<<endl;
+					}
+					temp.pop();
+				}
+				for (int i = 0; i < x; i++) {
+					for (int j = 0; j < x; j++) {
+						cout << road[i][j]<<" ";
+					}
+					cout << endl;
+				}
 
-			if (tx == ex && ty == ey) {
+				n[sx][sy] = 0;
+				sx = tx;
+				sy = ty;
+				n[tx][ty] = -1;
+				return ans;*/
+			//}
+			c[tx][ty] = 1;
+
+			/*if (tx == ex && ty == ey) {
 				cnt = ans;
 				return;
-			}
+			}*/
+		
+			
+			
 			if (tx - 1 >= 0) {
-				if ( c[tx - 1][ty] == 0) {
+				if (c[tx - 1][ty] == 0) {
 					temp.push(make_pair(tx - 1, ty));
+					road[tx - 1][ty] += road[tx][ty];
 				}
 			}
-			if (tx + 1 < x) {
-				if ( c[tx + 1][ty] == 0) {
-					temp.push(make_pair(tx + 1, ty));
-				}
-			}
+			
+			
 			if (ty - 1 >= 0) {
-				if ( c[tx][ty - 1] == 0) {
+				if (c[tx][ty - 1] == 0) {
 					temp.push(make_pair(tx, ty - 1));
+					road[tx][ty - 1] += road[tx][ty];
 				}
 			}
 			if (ty + 1 < x) {
-				if ( c[tx][ty + 1] == 0) {
+				if (c[tx][ty + 1] == 0) {
 					temp.push(make_pair(tx, ty + 1));
+					road[tx][ty + 1] += road[tx][ty];
 				}
 			}
+			if (tx + 1 < x) {
+				if (c[tx + 1][ty] == 0) {
+					temp.push(make_pair(tx + 1, ty));
+					road[tx + 1][ty] += road[tx][ty];
+				}
+			}
+			
+			if (n[tx][ty] < age&&n[tx][ty]>0) {
+				answer.push(make_pair(tx, ty));
+				for (int z = i + 1; z < siz; ++z) {
+					if (n[temp.front().first][temp.front().second] < age) {
+						answer.push(make_pair(temp.front().first, temp.front().second));
+					}
+					temp.pop();
+				}
+				break;
+			}
+		}
+		if (answer.size() > 0) {
+			cout << "==========================ì´ë™ì¹¸ : " << ans << "ë‚˜ì´ : " << age << "ì´ ì‹œê°„ : " << eatTime << endl;
+			for (int i = 0; i < x; i++) {
+				for (int j = 0; j < x; j++) {
+						cout << n[i][j] << " ";
+					
+				}
+				cout << endl;
+			}
+			cout << endl;
+			getchar();
+
+			for (int i = 0; i < x; i++) {
+				for (int j = 0; j < x; j++) {
+					cout << road[i][j] << " ";
+				}
+				cout << endl;
+			}
+			n[sx][sy] = 0;
+			sx=answer.front().first;
+			sy = answer.front().second;
+			int ansSize = answer.size();
+			cout <<"ì‹œë°œë…„ì˜ ì‹¸ì´ì¦ˆëŠ” ê°œì”¨ë°œ :"<< ansSize << endl;
+			for (int z = 0; z < ansSize; ++z) {
+					cout << "x = " << answer.front().first << " y= " << answer.front().second << " " << road[answer.front().first][answer.front().second] << endl;
+				
+					answer.pop();
+			}
+			n[sx][sy] = -1;
+			return ans;
 		}
 		ans++;
 	}
+	return 1000;
 }
