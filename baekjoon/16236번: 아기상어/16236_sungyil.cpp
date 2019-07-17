@@ -60,16 +60,31 @@ int check() {
 	c[sx][sy] = 1;
 	while (!temp.empty()) {
 		int siz = temp.size();
+		//cout << "ans : " <<ans<< endl;
 		for (int i = 0; i < siz; ++i) {
 			int tx = temp.front().first;
 			int ty = temp.front().second;
-			road[tx][ty] = ans;
+
 			temp.pop();
 			if (n[tx][ty] > age) {
 				continue;
 			}
 			else if (n[tx][ty] < age&&n[tx][ty]>0) {
+				
 				for (int z = i + 1; z < siz; ++z) {
+					if (n[temp.front().first][temp.front().second] < age&&n[temp.front().first][temp.front().second] > 0){
+						//cout << "x : " << temp.front().first << " y : " << temp.front().second << " " << road[temp.front().first][temp.front().second] << endl;
+						if (tx > temp.front().first) {
+							tx = temp.front().first;
+							ty = temp.front().second;
+						}
+						else if (tx == temp.front().first) {
+							if (ty > temp.front().second) {
+								tx = temp.front().first;
+								ty = temp.front().second;
+							}
+						}
+					}
 					temp.pop();
 				}
 
@@ -79,20 +94,13 @@ int check() {
 				n[tx][ty] = -1;
 				return ans;
 			}
-			//c[tx][ty] = 1;
-
-			/*if (tx == ex && ty == ey) {
-				cnt = ans;
-				return;
-			}*/
-		
 			
 			
 			if (tx - 1 >= 0) {
 				if (c[tx - 1][ty] == 0) {
 					c[tx-1][ty] = 1;
 					temp.push(make_pair(tx - 1, ty));
-					road[tx - 1][ty] += road[tx][ty];
+					road[tx - 1][ty] = ans+1;
 				}
 			}
 			
@@ -101,7 +109,7 @@ int check() {
 				if (c[tx][ty - 1] == 0) {
 					c[tx][ty-1] = 1;
 					temp.push(make_pair(tx, ty - 1));
-					road[tx][ty - 1] += road[tx][ty];
+					road[tx][ty - 1] = ans + 1;
 				}
 			}
 			if (ty + 1 < x) {
@@ -109,14 +117,14 @@ int check() {
 
 					c[tx][ty+1] = 1;
 					temp.push(make_pair(tx, ty + 1));
-					road[tx][ty + 1] += road[tx][ty];
+					road[tx][ty + 1] = ans + 1;
 				}
 			}
 			if (tx + 1 < x) {
 				if (c[tx + 1][ty] == 0) {
 					c[tx +1][ty] = 1;
 					temp.push(make_pair(tx + 1, ty));
-					road[tx + 1][ty] += road[tx][ty];
+					road[tx + 1][ty] = ans + 1;
 				}
 			}
 			
