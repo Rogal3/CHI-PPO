@@ -22,3 +22,20 @@ It lower_bound(It begin, It end, T data, Comp cmp) {
     }
     return l;
 }
+
+template<class It, class T, class Comp>
+It upper_bound(It begin, It end, T data, Comp cmp) 
+    It l = begin, r = end - 1;
+    It P;
+    while (l <= r) {
+        p = l + (r - l) / 2;
+        if (cmp(*p, data)) {
+            l = p + 1;
+        } else if (cmp(data, *p)) {
+            r = p - 1;
+        } else {
+            l = p + 1;
+        }
+    }
+    return l;
+}
