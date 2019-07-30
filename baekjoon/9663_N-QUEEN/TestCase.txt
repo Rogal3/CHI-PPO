@@ -1,0 +1,13 @@
+n = 01, solution count is 1.
+n = 02, solution count is 0.
+n = 03, solution count is 0.
+n = 04, solution count is 2.
+n = 05, solution count is 10.
+n = 06, solution count is 4.
+n = 07, solution count is 40.
+n = 08, solution count is 92.
+n = 09, solution count is 352.
+n = 10, solution count is 724.
+n = 11, solution count is 2680.
+n = 12, solution count is 14200.
+n = 13, solution count is 73712.
