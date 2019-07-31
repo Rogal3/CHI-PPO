@@ -32,7 +32,10 @@ void dfsF(int paper[10][10], int bang, int curCnt, int curLeft,int colorP[5]) {
 
 		if (curLeft <= 0) {
 			if (cnt > curCnt) {
-				
+				for (int i = 0; i < 5; ++i) {
+					cout<<colorP[i]<<" ";
+				}
+				cout << endl;
 				cnt = curCnt;
 			}
 		}
@@ -49,13 +52,17 @@ void dfsF(int paper[10][10], int bang, int curCnt, int curLeft,int colorP[5]) {
 			if (paper[i][j] == 1&&colorP[bang-1]>0) {
 				int che = 0;
 				for (int h = 0; h <bang; ++h) {//덮을 가로 탐색
+					if (h + i >= 10)break;
 					for (int k = 0; k < bang; ++k) {
+						if (k + j >= 10)break;
 						che += paper[i + h][j + k];
 					}
 				}
 				if (che == bang * bang) {// 다덮는다면
 					for (int h = 0; h < bang; ++h) {//덮어 버린다.
+						if (h + i >= 10)break;
 						for (int k = 0; k < bang; ++k) {
+							if (k + j >= 10)break;
 							paper[i + h][j + k] = 0;
 						}
 					}
