@@ -1,11 +1,12 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
-void finds(int bang, int colorSize);
+void dfsF(int paper[10][10], int bang, int curCnt, int curLeft, int colorP[5]);
 
 int paper[10][10] = { 0, };
 int colorP[5] = { 5,5,5,5,5 };
 int leftPaper = 0;
-int cnt = 0;
+int cnt = 3200;
 int main() {
 	
 	for (int i = 0; i < 10; i++) {
@@ -15,10 +16,9 @@ int main() {
 		}
 	}
 
-	for (int i = 0; i < 5; i++) {
-		finds(i, 5 - i);
-	}
-	if (leftPaper == 0) {
+	dfsF(paper,5,0,leftPaper,colorP);
+
+	if (cnt != 3200) {
 		cout << cnt << endl;
 	}
 	else {
@@ -27,30 +27,50 @@ int main() {
 	getchar();
 	getchar();
 }
-void finds(int bang, int colorSize) {//¾ê´Â ¹«Á¶°Ç Å«¾Ö·Î ½ÃÀÛÇÔ. Å«¾Ö¸»°í ÀÛÀº¾Ö ºÎÅÍ
-	int che = 0;
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 10; ++j) {
+void dfsF(int paper[10][10], int bang, int curCnt, int curLeft,int colorP[5]) {
+	if (bang == 0) {//ë§ˆì§€ë§‰ì— ë‹¤ë‹¤ëë‹¤ë©´
 
-			if (paper[i][j] == 1&&colorP[bang]!=0) {//µ¤¾î¾ßÇÒ Á¾ÀÌ°¡ ÀÖÀ¸¸é
-				che = 0;
-				for (int h = 0; h < colorSize; ++h) {//µ¤À» °¡·Î Å½»ö
-					for (int k = 0; k < colorSize; ++k) {
+		if (curLeft <= 0) {
+			if (cnt > curCnt) {
+				
+				cnt = curCnt;
+			}
+		}
+		return;
+	}
+	int newPaper[10][10] = { 0, };
+	int newColorP[5] = { 0, };
+	memcpy(newPaper, paper, 10 * 10*sizeof(int));
+	memcpy(newColorP, colorP, 5*sizeof(int));
+	dfsF(newPaper, bang - 1, curCnt, curLeft, newColorP);//í˜„ì¬ë°©ì—ì„œ 0ì¥ ë®ê³ ë‚˜ì„œ ë‹¤ìŒë°©.
+	for (int i = 0; i < 10; ++i) {//1ì¥ì”© ì¦ê°€í•´ì„œ ë‹¤ìŒë°©
+		for (int j = 0; j < 10; ++j) {
+			
+			if (paper[i][j] == 1&&colorP[bang-1]>0) {
+				int che = 0;
+				for (int h = 0; h <bang; ++h) {//ë®ì„ ê°€ë¡œ íƒìƒ‰
+					for (int k = 0; k < bang; ++k) {
 						che += paper[i + h][j + k];
 					}
 				}
-				if (che == colorSize * colorSize) {//´Ù µ¤À»¼ö ÀÖ´Ù¸é
-					for (int h = 0; h < colorSize; ++h) {//µ¤¾î ¹ö¸°´Ù.
-						for (int k = 0; k < colorSize; ++k) {
-							paper[i + h][j + k]=0;
+				if (che == bang * bang) {// ë‹¤ë®ëŠ”ë‹¤ë©´
+					for (int h = 0; h < bang; ++h) {//ë®ì–´ ë²„ë¦°ë‹¤.
+						for (int k = 0; k < bang; ++k) {
+							paper[i + h][j + k] = 0;
 						}
 					}
-					cnt++;
-					colorP[bang]--;
-					leftPaper -= colorSize * colorSize;
+					curCnt++;
+					colorP[bang-1]--;
+					curLeft -= bang * bang;
+					int newPaper[10][10] = { 0, };
+					int newColorP[5] = { 0, };
+					memcpy(newPaper, paper, 10 * 10*sizeof(int));
+					memcpy(newColorP, colorP, 5*sizeof(int));
+					dfsF(newPaper, bang - 1, curCnt, curLeft, newColorP);//í°ê±° í•œì¥ ë®ì—ˆìŒ ã„±ã„±
 				}
 			}
 
 		}
 	}
+
 }
