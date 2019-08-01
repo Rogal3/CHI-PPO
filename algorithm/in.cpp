@@ -1,4 +1,5 @@
 #include <cstdio>
+
 const int BUF_SIZE = 1 << 20;
 namespace in {
 	char buf[BUF_SIZE + 1];
@@ -23,6 +24,19 @@ namespace in {
 		}
 		return neg ? -res : res;
 	}
+	inline int readLine(char str[], register int len) {
+        register char c = read();
+        for (int i = 0; i < len; ++i) {
+            if (c == '\n') {
+                str[i] = '\0';
+                return i;
+            }
+            str[i] = c;
+            c = read();
+        }
+        str[len] = '\0';
+        return len;
+    }
 }
 
 namespace out {
@@ -39,14 +53,28 @@ namespace out {
 		}
 		buf[idx++] = c;
 	}
-	inline void writeint(int i) {
-		register char tmp[8], t = 0;
-		while (i) {
-			tmp[t++] = (i % 10) | 48;
-			i /= 10;
+	inline void writeunsigned(unsigned u) {
+		register char tmp[10], t = 0;
+		while (u) {
+			tmp[t++] = (u % 10) | 48;
+			u /= 10;
 		}
 		while (t) {
 			write(tmp[--t]);
+		}
+	}
+	inline void writeint(int i) {
+		if (i < 0) {
+			unsigned u = -i;
+			write('-');
+			writeunsigned(u);
+		} else {
+			writeunsigned(i);
+		}
+	}
+	inline void writestring(char str[]) {
+		for (int i = 0; str[i] != '\0'; ++i) {
+			write(str[i]);
 		}
 	}
 }
