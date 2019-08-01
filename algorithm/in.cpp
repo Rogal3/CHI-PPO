@@ -1,42 +1,52 @@
 #include <cstdio>
+const int BUF_SIZE = 1 << 20;
 namespace in {
-    const int BUF_SIZE = 1 << 18;  // = 262,144
-    char inbuf[BUF_SIZE];
-    char* buf_end = inbuf + BUF_SIZE;
-    char* buf_idx = buf_end;
-    inline char get_c() {
-        if (buf_idx == buf_end) {
-            int size = fread(inbuf, 1, BUF_SIZE, stdin);
-            buf_idx = inbuf;
-            buf_end = inbuf + size;
-        }
-        return *buf_idx++;
-    }
-    inline int readInt() {
-        bool neg = false;
-        int sum = 0;
-        char c = get_c();
-        if (c == '-') {
-            neg = true;
-            c = get_c();
-        }
-        while ('0' <= c && c <= '9') {
-            sum = sum * 10 + (c & 0xF);
-            c = get_c();
-        }
-        return neg ? -sum : sum;
-    }
-    inline int readLine(char str[], int len) {
-        char c = get_c();
-        for (int i = 0; i < len; ++i) {
-            if (c == '\n') {
-                str[i] = '\0';
-                return i;
-            }
-            str[i] = c;
-            c = get_c();
-        }
-        str[len] = '\0';
-        return len;
-    }
+	char buf[BUF_SIZE + 1];
+	int idx, ridx;
+
+	inline char read() {
+		if (idx == ridx) {
+			ridx = fread(buf, 1, BUF_SIZE, stdin);
+			idx = buf[ridx] = 0;
+		}
+		return buf[idx++];
+	}
+	inline int readint() {
+		int res = 0;
+		bool neg = 0;
+		register char tmp = read();
+		while (tmp < 33) tmp = read();
+		if (tmp == '-') neg = 1, tmp = read();
+		while (tmp >= 48 && tmp <= 57) {
+			res = res * 10 + (tmp & 15);
+			tmp = read();
+		}
+		return neg ? -res : res;
+	}
+}
+
+namespace out {
+	char buf[BUF_SIZE];
+	int idx;
+
+	inline void flush() {
+		fwrite(buf, 1, idx, stdout);
+	}
+	inline void write(register char c) {
+		if (idx == BUF_SIZE) {
+			flush();
+			idx = 0;
+		}
+		buf[idx++] = c;
+	}
+	inline void writeint(int i) {
+		register char tmp[8], t = 0;
+		while (i) {
+			tmp[t++] = (i % 10) | 48;
+			i /= 10;
+		}
+		while (t) {
+			write(tmp[--t]);
+		}
+	}
 }
