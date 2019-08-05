@@ -1,7 +1,7 @@
 #include <cstdio>
 
-const int BUF_SIZE = 1 << 20;
 namespace in {
+	const int BUF_SIZE = 1 << 20;
 	char buf[BUF_SIZE + 1];
 	int idx, ridx;
 
@@ -40,6 +40,7 @@ namespace in {
 }
 
 namespace out {
+	const int BUF_SIZE = 1 << 20;
 	char buf[BUF_SIZE];
 	int idx;
 
