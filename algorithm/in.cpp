@@ -3,17 +3,18 @@
 namespace in {
 	const int BUF_SIZE = 1 << 20;
 	char buf[BUF_SIZE + 1];
-	int idx, ridx;
+	char *ite, *end = ite;
 
 	inline char read() {
-		if (idx == ridx) {
-			ridx = fread(buf, 1, BUF_SIZE, stdin);
-			idx = buf[ridx] = 0;
+		if (ite == end) {
+			end = buf + fread(buf, 1, BUF_SIZE, stdin);
+			*end = 0;
+			ite = buf;
 		}
-		return buf[idx++];
+		return *ite++;
 	}
 	inline int readint() {
-		int res = 0;
+		unsigned res = 0;
 		bool neg = 0;
 		register char tmp = read();
 		while (tmp < 33) tmp = read();
@@ -24,7 +25,7 @@ namespace in {
 		}
 		return neg ? -res : res;
 	}
-	inline int readLine(char str[], register int len) {
+	inline int readline(char str[], register int len) {
         register char c = read();
         for (int i = 0; i < len; ++i) {
             if (c == '\n') {
@@ -42,19 +43,20 @@ namespace in {
 namespace out {
 	const int BUF_SIZE = 1 << 20;
 	char buf[BUF_SIZE];
-	int idx;
+	char *ite = buf;
+	const char *END = buf + BUF_SIZE;
 
 	inline void flush() {
-		fwrite(buf, 1, idx, stdout);
+		fwrite(buf, 1, ite - buf, stdout);
+		ite = buf;
 	}
 	inline void write(register char c) {
-		if (idx == BUF_SIZE) {
+		if (ite == END) {
 			flush();
-			idx = 0;
 		}
-		buf[idx++] = c;
+		*ite++ = c;
 	}
-	inline void writeunsigned(unsigned u) {
+	inline void writeunsigned(register unsigned u) {
 		register char tmp[10], t = 0;
 		while (u) {
 			tmp[t++] = (u % 10) | 48;
@@ -64,8 +66,8 @@ namespace out {
 			write(tmp[--t]);
 		}
 	}
-	inline void writeint(int i) {
-		if (i < 0) {
+	inline void writeint(const int &i) {
+		if (i & 0x80000000) {
 			unsigned u = -i;
 			write('-');
 			writeunsigned(u);
@@ -73,7 +75,7 @@ namespace out {
 			writeunsigned(i);
 		}
 	}
-	inline void writestring(char str[]) {
+	inline void writestring(const char str[]) {
 		for (int i = 0; str[i] != '\0'; ++i) {
 			write(str[i]);
 		}
