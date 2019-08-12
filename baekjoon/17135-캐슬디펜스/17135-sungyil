@@ -1,0 +1,111 @@
+#include<iostream>
+#include<cstdlib>
+#include <cstring>
+using namespace std;
+bool calcuD(int sx, int sy, int ex, int ey);
+int calcuDis(int sx, int sy, int ex, int ey);
+void attack(pair<int, bool> ach[3], int map[17][17]);
+
+int map[17][17] = { 0, };
+int n,m,d = 0;//n=행(y축) m=열(x축)
+int ay = 0;//궁수 y축값
+int enemy = 0;
+int main() {
+	cin >> n >> m >> d;
+	ay = n ;
+	for (int y = 0; y < n; ++y) {
+		for (int x = 0; x < m; ++x) {
+			cin >> map[y][x];
+		}
+	}
+	pair<int, bool> ach[3] = {make_pair<int,bool>(0,true),make_pair<int,bool>(1,true),make_pair<int,bool>(2,true) };
+	
+	for (int i = 0; i < (m*(m - 1)*(m - 2)) / 6; ++i) {//궁수를 배치할수 있는 모든 조합
+		int tempMap[17][17] = { 0, };
+		memcpy(tempMap, map, sizeof(int) * 17 * 17);
+		ach[0].second = true;
+		ach[1].second = true;
+		ach[2].second = true;
+		attack(ach, tempMap);
+
+		ach[2].first++;
+		if (ach[2].first == m) {
+			ach[1].first++;
+			if (ach[1].first == m-1) {
+				ach[0].first++;
+				ach[1].first = ach[0].first + 1;
+				
+			}
+			ach[2].first = ach[1].first + 1;
+		}
+		
+	}
+	cout << enemy << endl;
+
+}
+void attack(pair<int, bool> ach[3],int map[17][17]) {
+	int temp = 0;
+	int curCnt = 0;
+	int y = 0;
+	int curDis = 0;
+	while (1) {
+
+		for (y = n - 1-temp; y >= 0; --y) {//궁수와 가까이 있는 적 탐색
+			pair<int, int> dis[3] = { make_pair<int,int>(0,15),make_pair<int,int>(0,15),make_pair<int,int>(0,15) };
+
+			for (int x = 0; x < m; ++x) {
+
+				if (map[y][x] == 1) {//적발견!
+					for (int i = 0; i < 3; ++i) {
+						curDis = calcuDis(ach[i].first, ay, x, y + temp);
+						if (ach[i].second&&curDis<=d) {//공격가능이라면
+							if (dis[i].second > curDis) {
+								dis[i].first = x;
+								dis[i].second = curDis;
+							}
+						}
+					}
+				}
+			}
+			for (int i = 0; i < 3; ++i) {
+				if (dis[i].second != 15) {
+					if (map[y][dis[i].first] == 1) {
+						curCnt++;
+						map[y][dis[i].first] = 0;
+					}
+					ach[i].second = false;
+				}
+			}
+			
+			if (!ach[0].second && !ach[1].second && !ach[2].second || n - y - temp > d) {//모두가 공격하여 끝나거나 y축이 거리보다 크다면 횟수장전
+				for (int i = 0; i < 3; ++i) {//화살장전
+					ach[i].second = true;
+				}
+
+				temp++;
+				break;
+			}
+		}
+		int che = 0;
+		for (int i = y; i >=0;--i) {
+			for (int j = 0; j < m; ++j) {
+				if (map[i][j] == 1) {
+					che = 1;
+					break;
+				}
+			}
+			if (che)break;
+		}
+		if (che == 0) {
+			if (enemy < curCnt) {
+				enemy = curCnt;
+			}
+			break;
+		}
+
+	}
+	
+}
+int calcuDis(int sx, int sy, int ex, int ey) {
+	return abs(ex - sx) + abs(ey - sy);
+}
