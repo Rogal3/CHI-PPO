@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+void find(bool check[9], int bang[9], int top);
+
+int n;
+int nSize = 1;
+int main() {
+	cin >> n;
+
+	for (int i = 1; i <= n; ++i) {
+		nSize *= i;
+	}
+	bool check[9] = { 0, };
+	int bang[9] = { 0, };
+	find(check, bang, 0);
+
+	getchar();
+	getchar();
+	return 0;
+}
+void find(bool check[9],int bang[9],int top) {
+	if (top == n) {
+		for (int i = 0; i < n; ++i) {
+			printf("%d ", bang[i]);
+		}
+		printf("\n");
+		return;
+	}
+
+	for (int i = 1; i <=n; ++i) {
+		if (!check[i]) {
+			bang[top] = i;
+			top++;
+			check[i] = true;
+			find(check,bang, top);
+			check[i] = false;
+			top--;
+		}
+	}
+}
