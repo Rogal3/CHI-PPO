@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+void midPut(int v, int p);
+void find(bool check[9],int pNum[9], int top);
+
+int n, m;
+int num[9] = { 0, };
+int main() {
+	cin >> n >> m;
+	
+	for (int i = 0; i < n; ++i) {
+		cin >> num[i];
+		int min = i;
+		for (int j = 0; j < i; ++j) {
+			if (num[i]<num[j]) {
+				midPut(j, i);
+				break;
+			}
+		}
+	}
+	bool check[9] = { 0, };
+	int pNum[9] = { 0, };
+	find(check,pNum, 0);
+
+	getchar();
+	getchar();
+}
+void find(bool check[9],int pNum[9],int top) {
+	if (top == m) {
+		for (int i = 0; i < m; ++i) {
+			printf("%d ", pNum[i]);
+		}
+		printf("\n");
+		return;
+	}
+	for (int i = 0; i < n; ++i) {
+		if (!check[i]) {
+			check[i] = true;
+			pNum[top] = num[i];
+			top++;
+			find(check,pNum, top);
+			top--;
+			check[i] = false;
+		}
+	}
+}
+void midPut(int v,int p) {
+	for (int i = p; i >=v; --i) {
+		num[i+1] = num[i];
+	}
+	num[v] = num[p + 1];
+}
