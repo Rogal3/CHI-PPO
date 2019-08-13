@@ -39,7 +39,6 @@ int main() {
 		}
 		
 	}
-	cout << endl;
 	cout << enemy << endl;
 
 	getchar();
@@ -51,16 +50,10 @@ void attack(pair<int, bool> ach[3],int map[17][17]) {
 	int curCnt = 0;
 	int y = 0;
 	int curDis = 0;
-	cout << ach[0].first << " " << ach[1].first << " " << ach[2].first;
-	while (1) {
+	while (temp<n) {
 		pair<int, int> dis[3] = { make_pair<int,int>(0,15),make_pair<int,int>(0,15),make_pair<int,int>(0,15) };//x값과 공격할 친구와의 거리;
 		int disY[3] = { 0, };
 		for (y = n - 1-temp; y >= 0; --y) {//궁수와 가까이 있는 적 탐색
-
-
-			if (d < n - y+temp) {//궁수위치보다 멀다면 종료
-				break;
-			}
 
 			for (int x = 0; x < m; ++x) {
 
@@ -68,6 +61,7 @@ void attack(pair<int, bool> ach[3],int map[17][17]) {
 					for (int i = 0; i < 3; ++i) {
 						curDis = calcuDis(ach[i].first, ay, x, y + temp);
 						if (curDis<=d) {//공격가능이라면
+							
 							if (dis[i].second > curDis) {
 								dis[i].first = x;
 								disY[i] = y;
@@ -85,7 +79,7 @@ void attack(pair<int, bool> ach[3],int map[17][17]) {
 			}
 			
 		}
-		temp++;
+		temp++;//한칸 땡겨서 공격
 		for (int i = 0; i < 3; ++i) {//거리 짧은
 			if (dis[i].second != 15) {
 				if (map[disY[i]][dis[i].first] == 1) {//공격한 애 위치가 1이라면
@@ -95,50 +89,15 @@ void attack(pair<int, bool> ach[3],int map[17][17]) {
 				ach[i].second = false;
 			}
 		}
-		if (!ach[0].second && !ach[1].second && !ach[2].second) {//모두 공격안했다면
-			if (y<0) {//한번도 공격안하거나 마지막줄이라면
-				if (enemy < curCnt) {
-					enemy = curCnt;
-				}
-				break;
-			}
-		}
 
 		for (int i = 0; i < 3; ++i) {//화살장전
 			ach[i].second = true;
 		}
-		cout << endl;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; ++j) {
-				cout << map[i][j] << " ";
-			}
-			cout << endl;
-		}
-		/*if (!ach[0].second && !ach[1].second && !ach[2].second ) {//모두가 공격하여 끝나거나 y축이 거리보다 크다면 횟수장전
-			
-
-			//temp++;
-			//break;
-		}*/
-
-		/*int che = 0;
-		
-		for (int i = y; i >=0;--i) {
-			for (int j = 0; j < m; ++j) {
-				if (map[i][j] == 1) {
-					che = 1;
-					break;
-				}
-			}
-			if (che)break;
-		}*/
-		//cout << temp << endl;
-		//getchar();
-		
-
+	
 	}
-	//getchar();
-	//getchar();
+	if (enemy < curCnt) {
+		enemy = curCnt;
+	}
 	
 }
 int calcuDis(int sx, int sy, int ex, int ey) {
