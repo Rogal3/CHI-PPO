@@ -3,34 +3,23 @@
 #define KIND 4
 using namespace std;
 
-int N,A[MAX],operList[MAX-1];
-int operKind[KIND];
-int check[MAX-1];
+int N,A[MAX],oper[KIND];
 int maxN=-2100000000,minN=2100000000;
-void dfs(int depth,int index,int res);
-void print();
+
+void dfs(int depth,int res);
 int main(void){
 	int cnt=0;
 	cin>>N;
 	for(int i=0;i<N;i++)
 		cin>>A[i];
 	for(int i=0;i<KIND;i++){
-		int num;
-		cin>>num;
-		for(int j=0;j<num;j++,cnt++){
-			operList[cnt]=i;
-		}
+		cin>>oper[i];
 	}
-	dfs(1,1,A[0]);
+	dfs(1,A[0]);
 	cout<<maxN<<endl<<minN<<endl;
 	return 0;
 }
-void print(){
-	for(int i=0;i<N-1;i++)
-		cout<<operList[i]<<" ";
-	cout<<endl;
-}
-void dfs(int depth,int index,int res){
+void dfs(int depth,int res){
 	if(depth == N){
 		if(maxN < res)
 			maxN=res;
@@ -38,27 +27,24 @@ void dfs(int depth,int index,int res){
 			minN=res;
 		return ;
 	}
-	for(int i=0;i<N-1;i++){
-		if(check[i] == 0){
-			int temp=res;
-			check[i]=1;
-			switch(operList[i]){
-				case 0:
-					res+=A[index];
-					break;
-				case 1:
-					res-=A[index];
-					break;
-				case 2:
-					res*=A[index];
-					break;
-				case 3:
-					res/=A[index];
-					break;
-			}
-			dfs(depth+1,index+1,res);
-			check[i]=0;
-			res=temp;
-		}
+	if(oper[0]){
+		oper[0]--;
+		dfs(depth+1,res+A[depth]);
+		oper[0]++;
+	}
+	if(oper[1]){
+		oper[1]--;
+		dfs(depth+1,res-A[depth]);
+		oper[1]++;
+	}
+	if(oper[2]){
+		oper[2]--;
+		dfs(depth+1,res*A[depth]);
+		oper[2]++;
+	}
+	if(oper[3]){
+		oper[3]--;
+		dfs(depth+1,res/A[depth]);
+		oper[3]++;
 	}
 }
