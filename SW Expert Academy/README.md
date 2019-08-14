@@ -1,2 +1,3 @@
 # SW Expert Academy
-<a herf="https://www.swexpertacademy.com/">website</a>
+<a href="https://www.swexpertacademy.com/" target="_blank">WEBSITE</a>
+
