@@ -22,6 +22,7 @@ int chToNum(char ch);
 
 char star[6][10];
 char alpha[26] = { 'A','B','C','D','E','F','G','H','I','J','K','L','N','O','P','Q','R','S','T','U','V','W','X','Y','Z' };
+//                  0   1   2   3   4   5   6   7   8   9  10  11
 bool check[12] = { 0, };
 
 int num[6][4];
@@ -42,7 +43,10 @@ int main() {
 		cout << endl;
 	}
 	cout << endl;
-	
+	for (int i = 0; i < 12; ++i) {
+		cout << check[i] << " ";
+	}
+	cout << endl;
 	find(num, 0, 0, check,false);
 
 	for (int i = 0; i < 5; i++) {
@@ -65,44 +69,55 @@ void prepare() {
 	num[0][1] = chToNum(star[1][3]);
 	num[2][1] = chToNum(star[1][3]);
 
-	num[0][2] = chToNum(star[2][2]);
-	num[3][1] = chToNum(star[2][2]);
-
-	num[3][3] = chToNum(star[4][4]);
-	num[4][3] = chToNum(star[4][4]);
-
-	num[4][2] = chToNum(star[3][5]);
-	num[5][2] = chToNum(star[3][5]);
-
-	num[5][1] = chToNum(star[3][3]);
-	num[3][2] = chToNum(star[3][3]);
+	num[2][3] = chToNum(star[1][7]);
+	num[4][0] = chToNum(star[1][7]);
 
 	num[1][1] = chToNum(star[1][5]);
 	num[2][2] = chToNum(star[1][5]);
 
+	num[0][2] = chToNum(star[2][2]);
+	num[3][1] = chToNum(star[2][2]);
+
 	num[4][1] = chToNum(star[2][6]);
 	num[1][2] = chToNum(star[2][6]);
 
-	num[2][3] = chToNum(star[1][7]);
-	num[4][0] = chToNum(star[1][7]);
+	num[0][3] = chToNum(star[3][1]);
+	num[5][0] = chToNum(star[3][1]);
+
+	num[5][1] = chToNum(star[3][3]);
+	num[3][2] = chToNum(star[3][3]);
+
+	num[4][2] = chToNum(star[3][5]);
+	num[5][2] = chToNum(star[3][5]);
 
 	num[1][3] = chToNum(star[3][7]);
 	num[5][3] = chToNum(star[3][7]);
 
-	num[0][3] = chToNum(star[3][1]);
-	num[5][0] = chToNum(star[3][1]);
+	num[3][3] = chToNum(star[4][4]);
+	num[4][3] = chToNum(star[4][4]);
 	
 }
 void find(int num[6][4],int x,int y,bool c[12],bool conti) {
+	/*for (int q = 0; q < 6; ++q) {
+		for (int z = 0; z < 4; ++z) {
+			cout << num[q][z] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	for (int q = 0; q < 12; ++q) {
+		cout << c[q] << " ";
+	}
+	cout << endl;*/
 	if (conti)return;
 	if (x == 3 && y == 5) {
+		/*cout << endl;
 		for (int i = 0; i < 6; ++i) {
-			cout << endl;
 			for (int j = 0; j < 4; ++j) {
 				cout << num[i][j] << " ";
 			}
 			cout << endl;
-		}
+		}*/
 		if (checking(num)) {
 			conti = true;
 			last(num);
@@ -119,24 +134,27 @@ void find(int num[6][4],int x,int y,bool c[12],bool conti) {
 		px++;
 	}
 	if (num[y][x] == -1) {
-		cout << y << " " << x <<py<<" "<<px<< endl;
+		//cout << y << " " << x <<py<<" "<<px<< endl;
 		for (int i = 0; i < 12; ++i) {
+
+			
 			if (!c[i]) {
+				
 				int tempNum[6][4] = { 0, };
 				memcpy(tempNum, num, sizeof(int) * 6 * 4);
-				cout << y << " " << x << endl;
 				numInp(tempNum, x, y, i);
 				c[i] = true;
-				cout << y << " " << x << "  " << py << " " << px << endl;
+				//cout << y << " " << x << "  " << py << " " << px << endl;
 				find(tempNum, x + px, y + py, c, conti);
 				c[i] = false;
 			}
 		}
 	}
 	else {
-		cout << y << " " << x << "  " << py << " " << px <<"===="<< endl;
+		//cout << y << " " << x << "  " << py << " " << px <<"===="<< endl;
 		find(num, x+px, y+py, c, conti);
 	}
+	//cout << "asdfasdf" << endl;
 	
 }
 void last(int num[6][4]) {
@@ -180,7 +198,7 @@ void numInp(int num[6][4], int x, int y, int inp) {
 		num[0][1] = inp;
 		num[2][1] = inp;
 	}
-	else if (x == 0 && y == 2 || x == 1 && y == 3) {
+	else if (x == 2 && y == 0 || x == 1 && y == 3) {
 		num[0][2] = inp;
 		num[3][1] = inp;
 	}
@@ -227,5 +245,5 @@ int chToNum(char ch) {
 			break;
 		}
 	}
-	return i + 1;
+	return i;
 }
