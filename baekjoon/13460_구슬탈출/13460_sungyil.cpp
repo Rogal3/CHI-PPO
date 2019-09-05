@@ -64,11 +64,11 @@ void bfs(){
 				int bx=n.bx;
 				int by=n.by;
 
-				if(bmap[ry+moveY[i]][rx+moveX[i]] !='#'&&bmap[ry][rx]!='O'){
+				while(bmap[ry+moveY[i]][rx+moveX[i]] !='#'&&bmap[ry][rx]!='O'){
 					ry+=moveY[i];
 					rx+=moveX[i];
 				}
-				if(bmap[by+moveY[i]][bx+moveX[i]]!='#'&&bmap[by][bx]!='O'){
+				while(bmap[by+moveY[i]][bx+moveX[i]]!='#'&&bmap[by][bx]!='O'){
 					by+=moveY[i];
 					bx+=moveX[i];
 				}
