@@ -7,7 +7,7 @@ public class Main {
 	static int N;
 	static int M;
 	static int[][] map;
-  static int depth;
+  	static int depth;
 	
 	public static void main(String[] args) {
 		readInput();
@@ -17,9 +17,9 @@ public class Main {
 		for (int y = 0; y < N; ++y) {
 			for (int x = 0; x < M; ++x) {
 				if (map[y][x] == 0 && visited[y][x] == false) {
-          depth = 0;
+          				depth = 0;
 					dfs(y, x, visited);
-          answer.add(depth);
+          				answer.add(depth);
 				}
 			}
 		}
@@ -53,7 +53,7 @@ public class Main {
 		final int[] dy = {-1, 1, 0, 0};
 		final int[] dx = {0, 0, -1, 1};
 		visited[y][x] = true;
-    ++depth;
+    		++depth;
 		for (int d = 0; d < 4; ++d) {
 			int ny = y + dy[d];
 			int nx = x + dx[d];
