@@ -18,41 +18,36 @@ class Solution {
 			return Integer.compare(numberRangeOfArg0[2], numberRangeOfArg1[2]);
 		}
 	}
-	
-    public String[] solution(String[] files) {
-        sort(files);
-        return files;
-    }
-    
-    // @RETURN array of integer as { begin, end, valueOfNumber }
-    public int[] findRangeOfNumber(String str) {
-    	int[] ret = new int[3];
-    	int i = 0;
-    	int sum = 0;
-    	for (; i < str.length(); ++i) {
-    		char c = str.charAt(i);
-    		if (Character.isDigit(c)) {
-    			ret[0] = i;
-    			break;
-    		}
-    	}
-    	for (; i < str.length(); ++i) {
-    		char c = str.charAt(i);
-    		if (Character.isDigit(c)) {
-    			int digit = Character.getNumericValue(c);
-    			sum = sum * 10 + digit;
-    		} else {
-    			break;
-    		}
-    	}
+
+	public String[] solution(String[] files) {
+		Comp comp = new Comp();
+		Arrays.sort(files, comp);
+		return files;
+	}
+
+	// @RETURN array of integer as { begin, end, valueOfNumber }
+	public int[] findRangeOfNumber(String str) {
+		int[] ret = new int[3];
+		int i = 0;
+		int sum = 0;
+		for (; i < str.length(); ++i) {
+			char c = str.charAt(i);
+			if (Character.isDigit(c)) {
+				ret[0] = i;
+				break;
+			}
+		}
+		for (; i < str.length(); ++i) {
+			char c = str.charAt(i);
+			if (Character.isDigit(c)) {
+				int digit = Character.getNumericValue(c);
+				sum = sum * 10 + digit;
+			} else {
+				break;
+			}
+		}
 		ret[1] = i;
 		ret[2] = sum;
-    	return ret;
-    }
-    
-    public String[] sort(String[] array) {
-    	Comp comp = new Comp();
-    	Arrays.sort(array, comp);
-    	return array;
-    }
+		return ret;
+	}
 }
