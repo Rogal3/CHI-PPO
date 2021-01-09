@@ -1,10 +1,9 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 class Solution {
 	public String[] solution(String[] record) {
-		Map<String, String> nicknameMap = new HashMap<>();
+		HashMap<String, String> nicknameMap = new HashMap<>();
 		Stream.of(record)
 			.filter(r -> r.startsWith("Enter") || r.startsWith("Change"))
 			.forEach(r -> nicknameMap.put(r.split(" ")[1], r.split(" ")[2]));
