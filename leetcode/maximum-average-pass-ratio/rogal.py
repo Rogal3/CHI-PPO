@@ -1,3 +1,5 @@
+# https://leetcode.com/problems/maximum-average-pass-ratio/
+
 from queue import PriorityQueue
 
 class Solution:
